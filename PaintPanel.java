@@ -30,10 +30,14 @@ public class PaintPanel extends JPanel {
 	private int x0 = -1, y0 = -1, x1 = -1, y1 = -1;
 	
 	private boolean drawing = false;
-	
+    private int finish =0;
+    
 	private BufferedImage image;
+    private Image image_buffer;
 	private Graphics ig;
+    private Graphics ig_buffer;
 	private Graphics2D ig2d;
+    private Graphics2D ig2d_buffer;
 	
 	public PaintPanel() {  //initial a cube
         image = new BufferedImage(640, 640, BufferedImage.TYPE_INT_RGB);
@@ -56,6 +60,8 @@ public class PaintPanel extends JPanel {
     
     public void draw(){  //draw edges
         find_max_z();
+        finish=0;
+        clear();
         if(p1.z<max_z && p2.z<max_z)   drawLine(p1,p2,c0);
         if(p2.z<max_z && p4.z<max_z)   drawLine(p2,p4,c0);
         if(p4.z<max_z && p3.z<max_z)   drawLine(p4,p3,c0);
@@ -87,6 +93,9 @@ public class PaintPanel extends JPanel {
         if(p5.z<max_z && p6.z<max_z && p8.z<max_z && p7.z<max_z)  {
             fill_square(p5,p6,p8,p7,c6);
         }
+        finish=1;
+        //ig = ig_buffer;
+        //paint(ig_buffer);
     }
     
     public void fill_square(Point pp1,Point pp2, Point pp3, Point pp4, Color c){  //fill color for one surface
@@ -100,37 +109,37 @@ public class PaintPanel extends JPanel {
         fillPolygon(x,y,c);
     }
     
-    public void CubeRotateX(){
-        p1.RotateX(1);
-        p2.RotateX(1);
-        p3.RotateX(1);
-        p4.RotateX(1);
-        p5.RotateX(1);
-        p6.RotateX(1);
-        p7.RotateX(1);
-        p8.RotateX(1);
+    public void CubeRotateX(int angle){
+        p1.RotateX(angle);
+        p2.RotateX(angle);
+        p3.RotateX(angle);
+        p4.RotateX(angle);
+        p5.RotateX(angle);
+        p6.RotateX(angle);
+        p7.RotateX(angle);
+        p8.RotateX(angle);
     }
     
-    public void CubeRotateY(){
-        p1.RotateY(1);
-        p2.RotateY(1);
-        p3.RotateY(1);
-        p4.RotateY(1);
-        p5.RotateY(1);
-        p6.RotateY(1);
-        p7.RotateY(1);
-        p8.RotateY(1);
+    public void CubeRotateY(int angle){
+        p1.RotateY(angle);
+        p2.RotateY(angle);
+        p3.RotateY(angle);
+        p4.RotateY(angle);
+        p5.RotateY(angle);
+        p6.RotateY(angle);
+        p7.RotateY(angle);
+        p8.RotateY(angle);
     }
     
-    public void CubeRotateZ(){
-        p1.RotateZ(1);
-        p2.RotateZ(1);
-        p3.RotateZ(1);
-        p4.RotateZ(1);
-        p5.RotateZ(1);
-        p6.RotateZ(1);
-        p7.RotateZ(1);
-        p8.RotateZ(1);
+    public void CubeRotateZ(int angle){
+        p1.RotateZ(angle);
+        p2.RotateZ(angle);
+        p3.RotateZ(angle);
+        p4.RotateZ(angle);
+        p5.RotateZ(angle);
+        p6.RotateZ(angle);
+        p7.RotateZ(angle);
+        p8.RotateZ(angle);
     }
 
     private void drawPixel(Point p,Color c){
@@ -232,12 +241,13 @@ public class PaintPanel extends JPanel {
 			}
 		}
 	}
-	
 	public void paint(Graphics g) {
-		super.paint(g);
+		//super.paint(g);
+        //ig2d = (Graphics2D) ig_buffer;
 		Graphics2D g2d = (Graphics2D) g;
 		ig2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawImage(image, 0, 0, this);
+		if(finish ==1 ) g.drawImage(image, 0, 0, this);
+        //super.paint(g);
 	}
 	
     public void fillPolygon(int[] x, int[] y,Color c) {
@@ -342,7 +352,7 @@ public class PaintPanel extends JPanel {
 	public void clear() {
 		ig.setColor(Color.white);
 		ig.fillRect(0, 0, 640, 640);
-		drawing = false;
+		//drawing = false;
 		repaint();
 	}
 }
