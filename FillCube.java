@@ -16,48 +16,48 @@ public class FillCube implements KeyListener {
     class ThreadW implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateX(-1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('x',-1);
+            //centerPanel.draw();
         }
     }
     
     class ThreadS implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateX(1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('x',1);
+            //centerPanel.draw();
         }
     }
     
     class ThreadA implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateY(1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('y',1);
+            //centerPanel.draw();
         }
     }
     
     class ThreadD implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateY(-1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('y',-1);
+            //centerPanel.draw();
         }
     }
     
     class ThreadQ implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateZ(-1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('z',-1);
+            //centerPanel.draw();
         }
     }
     
     class ThreadE implements Runnable{
         public void run(){
             //centerPanel.clear();
-            centerPanel.CubeRotateZ(1);
-            centerPanel.draw();
+            centerPanel.CubeRotate('z',1);
+            //centerPanel.draw();
         }
     }
     
@@ -100,27 +100,27 @@ public class FillCube implements KeyListener {
 	public void keyPressed(KeyEvent e) {
         if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W') {
             t1 = Executors.newScheduledThreadPool(1);
-            t1.scheduleAtFixedRate(new ThreadW(),0,300,TimeUnit.MILLISECONDS);
+            t1.scheduleAtFixedRate(new ThreadW(),0,30,TimeUnit.MILLISECONDS);
 		}
         if (e.getKeyChar() == 's' || e.getKeyChar() == 'S') {
             t2 = Executors.newScheduledThreadPool(2);
-            t2.scheduleAtFixedRate(new ThreadS(),0,300,TimeUnit.MILLISECONDS);
+            t2.scheduleAtFixedRate(new ThreadS(),0,30,TimeUnit.MILLISECONDS);
         }
         if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A') {
             t3 = Executors.newScheduledThreadPool(3);
-            t3.scheduleAtFixedRate(new ThreadA(),0,300,TimeUnit.MILLISECONDS);
+            t3.scheduleAtFixedRate(new ThreadA(),0,30,TimeUnit.MILLISECONDS);
         }
         if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D') {
             t4 = Executors.newScheduledThreadPool(4);
-            t4.scheduleAtFixedRate(new ThreadD(),0,300,TimeUnit.MILLISECONDS);
+            t4.scheduleAtFixedRate(new ThreadD(),0,30,TimeUnit.MILLISECONDS);
         }
         if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
             t5 = Executors.newScheduledThreadPool(5);
-            t5.scheduleAtFixedRate(new ThreadQ(),0,300,TimeUnit.MILLISECONDS);
+            t5.scheduleAtFixedRate(new ThreadQ(),0,30,TimeUnit.MILLISECONDS);
         }
         if (e.getKeyChar() == 'e' || e.getKeyChar() == 'E') {
             t6 = Executors.newScheduledThreadPool(6);
-            t6.scheduleAtFixedRate(new ThreadE(),0,300,TimeUnit.MILLISECONDS);
+            t6.scheduleAtFixedRate(new ThreadE(),0,30,TimeUnit.MILLISECONDS);
         }
     }
 

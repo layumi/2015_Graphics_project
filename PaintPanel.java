@@ -58,7 +58,14 @@ public class PaintPanel extends JPanel {
         if(max_z<p8.z)  max_z = p8.z;
     }
     
-    public void draw(){  //draw edges
+    public synchronized void CubeRotate(char v,int angle){
+        if(v=='x') CubeRotateX(angle);
+        else if(v=='y') CubeRotateY(angle);
+        else if(v=='z') CubeRotateZ(angle);
+        draw();
+    }
+    
+    public synchronized void draw(){  //draw edges
         find_max_z();
         finish=0;
         clear();
@@ -110,36 +117,36 @@ public class PaintPanel extends JPanel {
     }
     
     public void CubeRotateX(int angle){
-        p1.RotateX(angle);
-        p2.RotateX(angle);
-        p3.RotateX(angle);
-        p4.RotateX(angle);
-        p5.RotateX(angle);
-        p6.RotateX(angle);
-        p7.RotateX(angle);
-        p8.RotateX(angle);
+        p1.Rotate('x',angle);
+        p2.Rotate('x',angle);
+        p3.Rotate('x',angle);
+        p4.Rotate('x',angle);
+        p5.Rotate('x',angle);
+        p6.Rotate('x',angle);
+        p7.Rotate('x',angle);
+        p8.Rotate('x',angle);
     }
     
     public void CubeRotateY(int angle){
-        p1.RotateY(angle);
-        p2.RotateY(angle);
-        p3.RotateY(angle);
-        p4.RotateY(angle);
-        p5.RotateY(angle);
-        p6.RotateY(angle);
-        p7.RotateY(angle);
-        p8.RotateY(angle);
+        p1.Rotate('y',angle);
+        p2.Rotate('y',angle);
+        p3.Rotate('y',angle);
+        p4.Rotate('y',angle);
+        p5.Rotate('y',angle);
+        p6.Rotate('y',angle);
+        p7.Rotate('y',angle);
+        p8.Rotate('y',angle);
     }
     
     public void CubeRotateZ(int angle){
-        p1.RotateZ(angle);
-        p2.RotateZ(angle);
-        p3.RotateZ(angle);
-        p4.RotateZ(angle);
-        p5.RotateZ(angle);
-        p6.RotateZ(angle);
-        p7.RotateZ(angle);
-        p8.RotateZ(angle);
+        p1.Rotate('z',angle);
+        p2.Rotate('z',angle);
+        p3.Rotate('z',angle);
+        p4.Rotate('z',angle);
+        p5.Rotate('z',angle);
+        p6.Rotate('z',angle);
+        p7.Rotate('z',angle);
+        p8.Rotate('z',angle);
     }
 
     private void drawPixel(Point p,Color c){
@@ -241,7 +248,8 @@ public class PaintPanel extends JPanel {
 			}
 		}
 	}
-	public void paint(Graphics g) {
+    
+	public synchronized void paint(Graphics g) {
 		//super.paint(g);
         //ig2d = (Graphics2D) ig_buffer;
 		Graphics2D g2d = (Graphics2D) g;
