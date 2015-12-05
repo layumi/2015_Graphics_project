@@ -16,21 +16,22 @@ public class PaintPanel extends JPanel {
     //------   1-2   5-6
     //------   | |   | |
     //------   3-4   7-8
-    int half=50;
-    private Point p1= new Point(270,270,-50);
-    private Point p2= new Point(370,270,-50);
-    private Point p3= new Point(270,370,-50);
-    private Point p4= new Point(370,370,-50);
-    private Point p5= new Point(270,270,50);
-    private Point p6= new Point(370,270,50);
-    private Point p7= new Point(270,370,50);
-    private Point p8= new Point(370,370,50);
+    int half=50;  //radius = 50 * sqrt(2)
+    private Point p1= new Point(270,270,-50,1);
+    private Point p2= new Point(370,270,-50,2);
+    private Point p3= new Point(270,370,-50,3);
+    private Point p4= new Point(370,370,-50,4);
+    private Point p5= new Point(270,270,50,5);
+    private Point p6= new Point(370,270,50,6);
+    private Point p7= new Point(270,370,50,7);
+    private Point p8= new Point(370,370,50,8);
+    private Point tmp;  //record max-z node
     
-	private int N,max_z=-9999;
-	private int x0 = -1, y0 = -1, x1 = -1, y1 = -1;
+	private double max_z=-9999;
+	private int x0 = -1, y0 = -1, x1 = -1, y1 = -1,N;
 	
 	private boolean drawing = false;
-    private int finish =0;
+    private int finish = 0;
     
 	private BufferedImage image;
     private Image image_buffer;
@@ -48,14 +49,15 @@ public class PaintPanel extends JPanel {
 	}
     
     private void find_max_z(){   //found the max_z. That point should not be showed.
-        max_z = p1.z;
-        if(max_z<p2.z)  max_z = p2.z;
-        if(max_z<p3.z)  max_z = p3.z;
-        if(max_z<p4.z)  max_z = p4.z;
-        if(max_z<p5.z)  max_z = p5.z;
-        if(max_z<p6.z)  max_z = p6.z;
-        if(max_z<p7.z)  max_z = p7.z;
-        if(max_z<p8.z)  max_z = p8.z;
+        max_z = p1.zt;tmp=p1;
+        if(max_z<p2.zt)  {max_z = p2.zt;tmp = p2;}
+        if(max_z<p3.zt)  {max_z = p3.zt;tmp = p3;}
+        if(max_z<p4.zt)  {max_z = p4.zt;tmp = p4;}
+        if(max_z<p5.zt)  {max_z = p5.zt;tmp = p5;}
+        if(max_z<p6.zt)  {max_z = p6.zt;tmp = p6;}
+        if(max_z<p7.zt)  {max_z = p7.zt;tmp = p7;}
+        if(max_z<p8.zt)  {max_z = p8.zt;tmp = p8;}
+        //System.out.printf("max_from %d:%f\n",tmp.node,max_z);
     }
     
     public synchronized void CubeRotate(char v,int angle){
@@ -63,43 +65,58 @@ public class PaintPanel extends JPanel {
         else if(v=='y') CubeRotateY(angle);
         else if(v=='z') CubeRotateZ(angle);
         draw();
+        //repaint();
     }
     
     public synchronized void draw(){  //draw edges
         find_max_z();
         finish=0;
         clear();
-        if(p1.z<max_z && p2.z<max_z)   drawLine(p1,p2,c0);
-        if(p2.z<max_z && p4.z<max_z)   drawLine(p2,p4,c0);
-        if(p4.z<max_z && p3.z<max_z)   drawLine(p4,p3,c0);
-        if(p3.z<max_z && p1.z<max_z)   drawLine(p3,p1,c0);
-        if(p5.z<max_z && p6.z<max_z)   drawLine(p5,p6,c0);
-        if(p6.z<max_z && p8.z<max_z)   drawLine(p6,p8,c0);
-        if(p8.z<max_z && p7.z<max_z)   drawLine(p8,p7,c0);
-        if(p7.z<max_z && p5.z<max_z)   drawLine(p7,p5,c0);
-        if(p1.z<max_z && p5.z<max_z)   drawLine(p1,p5,c0);
-        if(p2.z<max_z && p6.z<max_z)   drawLine(p2,p6,c0);
-        if(p3.z<max_z && p7.z<max_z)   drawLine(p3,p7,c0);
-        if(p4.z<max_z && p8.z<max_z)   drawLine(p4,p8,c0);
+        if(tmp.node!=1&&tmp.node!=2)
+            drawLine(p1,p2,c0);
+        if(tmp.node!=2&&tmp.node!=4)
+            drawLine(p2,p4,c0);
+        if(tmp.node!=4&&tmp.node!=3)
+            drawLine(p4,p3,c0);
+        if(tmp.node!=3&&tmp.node!=1)
+            drawLine(p3,p1,c0);
+        if(tmp.node!=5&&tmp.node!=6)
+            drawLine(p5,p6,c0);
+        if(tmp.node!=6&&tmp.node!=8)
+            drawLine(p6,p8,c0);
+        if(tmp.node!=8&&tmp.node!=7)
+            drawLine(p8,p7,c0);
+        if(tmp.node!=7&&tmp.node!=5)
+            drawLine(p7,p5,c0);
+        if(tmp.node!=1&&tmp.node!=5)
+            drawLine(p1,p5,c0);
+        if(tmp.node!=2&&tmp.node!=6)
+            drawLine(p2,p6,c0);
+        if(tmp.node!=3&&tmp.node!=7)
+            drawLine(p3,p7,c0);
+        if(tmp.node!=4&&tmp.node!=8)
+            drawLine(p4,p8,c0);
         //draw surface
-        if(p1.z<max_z && p2.z<max_z && p4.z<max_z && p3.z<max_z)  {
+        
+        if(tmp.node!=1 && tmp.node!=2 && tmp.node!=4 && tmp.node!=3)  {
             fill_square(p1,p2,p4,p3,c1);
         }
-        if(p1.z<max_z && p5.z<max_z && p7.z<max_z && p3.z<max_z)  {
+        if(tmp.node!=1 && tmp.node!=5 && tmp.node!=7 && tmp.node!=3)  {
             fill_square(p1,p5,p7,p3,c2);
         }
-        if(p1.z<max_z && p5.z<max_z && p6.z<max_z && p2.z<max_z)  {
+        if(tmp.node!=1 && tmp.node!=5 && tmp.node!=6 && tmp.node!=2)  {
             fill_square(p1,p5,p6,p2,c3);
         }
-        if(p2.z<max_z && p6.z<max_z && p8.z<max_z && p4.z<max_z)  {
+        if(tmp.node!=2 && tmp.node!=6 && tmp.node!=8 && tmp.node!=4)  {
             fill_square(p2,p6,p8,p4,c4);
         }
-        if(p3.z<max_z && p7.z<max_z && p8.z<max_z && p4.z<max_z)  {
+        if(tmp.node!=3 && tmp.node!=7 && tmp.node!=8 && tmp.node!=4)  {
             fill_square(p3,p7,p8,p4,c5);
         }
-        if(p5.z<max_z && p6.z<max_z && p8.z<max_z && p7.z<max_z)  {
+        if(tmp.node!=5 && tmp.node!=6 && tmp.node!=8 && tmp.node!=7)  {
             fill_square(p5,p6,p8,p7,c6);
         }
+        
         finish=1;
         //ig = ig_buffer;
         //paint(ig_buffer);
